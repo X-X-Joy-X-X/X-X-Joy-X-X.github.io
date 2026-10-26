@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Joy Barno</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23121A1C'/%3E%3Ctext x='16' y='22' font-family='Arial Narrow,Arial,sans-serif' font-weight='700' font-size='15' text-anchor='middle' fill='%234CC3CC'%3EJB%3C/text%3E%3C/svg%3E">
+<link rel="canonical" href="https://x-x-joy-x-x.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Joy Barno | Robotics &amp; Embedded Systems Engineer">
+<meta property="og:description" content="Robotics and embedded systems engineer. Robots, power systems, firmware, and computer vision, built from the frame up.">
+<meta property="og:url" content="https://x-x-joy-x-x.github.io/">
+<meta property="og:image" content="https://x-x-joy-x-x.github.io/assets/rover-build.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Joy Barno: robotics and embedded systems engineer. Projects, research, and experience.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Same baseline the Artifact viewer applies */
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<style>
+/* Layout: the page reads like an engineering drawing set. A title block identifies the author,
+   each project is a "detail" with its own spec table, and dimension lines annotate real hardware. */
+:root {
+  --paper: #F2F5F4;
+  --sheet: #FBFCFC;
+  --ink: #121A1C;
+  --graphite: #55646A;
+  --rule: #C7D0D2;
+  --trace: #0A7680;
+  --trace-soft: #D7EBEC;
+  --signal: #C4361F;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: 2.25rem;
+  --step-4: clamp(3.25rem, 9vw, 6.5rem);
+  --wrap: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1416; --sheet: #141B1E; --ink: #E3E9EA; --graphite: #93A3A9; --rule: #2A363A;
+    --trace: #4CC3CC; --trace-soft: #173236; --signal: #FF6B57; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1416; --sheet: #141B1E; --ink: #E3E9EA; --graphite: #93A3A9; --rule: #2A363A;
+  --trace: #4CC3CC; --trace-soft: #173236; --signal: #FF6B57; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--paper);
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--trace); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+.wrap {
+  max-width: var(--wrap); margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.label {
+  font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--graphite);
+}
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.mark { font-family: var(--display); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }
+.mark span { color: var(--trace); }
+.topbar nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.topbar nav a { font-family: var(--mono); font-size: var(--step--1); text-decoration: none; color: var(--graphite); }
+.topbar nav a:hover { color: var(--trace); }
+@media (max-width: 560px) { .topbar nav { gap: 14px; } .topbar nav a:nth-child(3) { display: none; } }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 56px 32px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 48px; align-items: center; }
+@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 36px; } }
+.hero-copy { display: grid; gap: 20px; min-width: 0; }
+.hero h1 {
+  font-family: var(--display); font-weight: 700; font-size: var(--step-4);
+  line-height: 0.88; letter-spacing: 0.01em; text-transform: uppercase;
+}
+.trace-svg { width: 100%; max-width: 440px; height: 34px; display: block; }
+.trace-svg .base { stroke: var(--rule); }
+.trace-svg .pulse { stroke: var(--trace); stroke-dasharray: 60 900; animation: run 3.6s linear infinite; }
+@keyframes run { from { stroke-dashoffset: 960; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .trace-svg .pulse { animation: none; stroke-dasharray: none; } }
+.lede { font-size: var(--step-1); max-width: 34em; color: var(--ink); }
+.lede strong { font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: var(--step--1);
+  padding: 9px 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  text-decoration: none; cursor: pointer; border-radius: 2px;
+}
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn:hover { border-color: var(--trace); color: var(--trace); }
+.btn.primary:hover { background: var(--trace); border-color: var(--trace); color: var(--paper); }
+.email { font-family: var(--mono); font-size: var(--step--1); color: var(--graphite); user-select: all; }
+
+.figure { margin: 0; min-width: 0; }
+.photo-frame { position: relative; border: 1px solid var(--rule); background: var(--sheet); padding: 10px; }
+.photo-frame img { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; }
+.corner { position: absolute; width: 14px; height: 14px; border-color: var(--trace); border-style: solid; }
+.corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+.corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+.corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.dim { position: relative; margin: 14px 10px 0; height: 18px; }
+.dim::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; border-top: 1px solid var(--graphite); }
+.dim::after { content: ""; position: absolute; left: 0; right: 0; top: 2px; height: 13px; border-left: 1px solid var(--graphite); border-right: 1px solid var(--graphite); }
+.dim span {
+  position: relative; z-index: 1; display: block; width: max-content; margin: 0 auto; padding: 0 8px;
+  background: var(--paper); font-family: var(--mono); font-size: 0.75rem; color: var(--graphite); line-height: 18px;
+}
+.figure figcaption { margin-top: 10px; font-size: var(--step--1); color: var(--graphite); }
+
+/* ---------- title block ---------- */
+.titleblock {
+  margin-top: 44px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  border: 1.5px solid var(--ink); background: var(--sheet);
+}
+.titleblock > div { padding: 10px 12px; border-right: 1px solid var(--rule); min-width: 0; display: grid; gap: 2px; }
+.titleblock > div:last-child { border-right: 0; }
+.titleblock .v { font-family: var(--mono); font-size: var(--step--1); color: var(--ink); overflow-wrap: anywhere; }
+.titleblock .v .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--trace); margin-right: 6px; vertical-align: 1px; box-shadow: 0 0 0 3px var(--trace-soft); }
+@media (max-width: 900px) {
+  .titleblock { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .titleblock > div:nth-child(3) { border-right: 0; }
+  .titleblock > div:nth-child(-n+3) { border-bottom: 1px solid var(--rule); }
+}
+@media (max-width: 520px) {
+  .titleblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .titleblock > div { border-right: 1px solid var(--rule) !important; border-bottom: 1px solid var(--rule); }
+  .titleblock > div:nth-child(2n) { border-right: 0 !important; }
+  .titleblock > div:nth-last-child(-n+2) { border-bottom: 0; }
+}
+
+/* ---------- sections ---------- */
+section { padding-block: 64px; border-top: 1px solid var(--rule); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+.sec-head h2 { font-family: var(--display); font-weight: 600; font-size: var(--step-3); text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
+.sec-head p { max-width: 36em; color: var(--graphite); }
+
+/* ---------- project details ---------- */
+.detail { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 32px; padding-block: 36px; border-top: 1px dashed var(--rule); }
+.detail:first-of-type { border-top: 0; padding-top: 0; }
+@media (max-width: 760px) { .detail { grid-template-columns: 1fr; gap: 16px; } }
+.callout { display: flex; gap: 14px; align-items: flex-start; }
+.bubble {
+  flex: none; width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--ink);
+  display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 1.375rem;
+}
+.callout .meta { display: grid; gap: 4px; }
+.callout .when { font-family: var(--mono); font-size: 0.75rem; color: var(--graphite); }
+.detail-body { display: grid; gap: 18px; min-width: 0; }
+.detail-body h3 { font-family: var(--display); font-weight: 600; font-size: var(--step-2); text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05; }
+.detail-body .sub { color: var(--graphite); margin-top: 4px; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; }
+@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+.did { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
+.did li { padding-left: 20px; position: relative; max-width: 40em; }
+.did li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 10px; border-top: 1.5px solid var(--trace); }
+.spec { margin: 0; border: 1px solid var(--rule); background: var(--sheet); align-self: start; }
+.spec div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; padding: 8px 12px; border-top: 1px solid var(--rule); }
+.spec div:first-child { border-top: 0; }
+.spec dt { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--graphite); padding-top: 2px; }
+.spec dd { margin: 0; font-size: 0.9rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.gallery { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 14px; }
+@media (max-width: 640px) { .gallery { grid-template-columns: 1fr; } }
+.gallery figure { margin: 0; border: 1px solid var(--rule); background: #FFFFFF; display: grid; grid-template-rows: 1fr auto; min-width: 0; }
+.gallery img { width: 100%; height: 100%; max-height: 300px; object-fit: contain; display: block; padding: 8px; }
+.gallery figcaption { font-family: var(--mono); font-size: 0.6875rem; color: #55646A; padding: 6px 10px; border-top: 1px solid #DDE3E4; background: #F6F8F8; }
+.gallery.even { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.gallery.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gallery.even img, .gallery.three img { object-fit: cover; aspect-ratio: 3 / 2; padding: 0; max-height: none; height: auto; }
+.gallery.three img { aspect-ratio: 1 / 1; }
+@media (max-width: 640px) { .gallery.even, .gallery.three { grid-template-columns: 1fr; } }
+.status { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--trace); border: 1px solid var(--trace); padding: 3px 9px; border-radius: 999px; margin-bottom: 10px; }
+.status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--trace); box-shadow: 0 0 0 3px var(--trace-soft); }
+.locked-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 8px; }
+.locked {
+  border: 1.5px dashed var(--graphite); padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0;
+  background: repeating-linear-gradient(135deg, var(--sheet) 0 9px, var(--paper) 9px 10px);
+}
+.locked h4 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.02em; }
+.locked .when { font-family: var(--mono); font-size: 0.75rem; color: var(--graphite); }
+.locked p { font-size: 0.9rem; color: var(--graphite); }
+.lock-row { display: flex; align-items: center; gap: 8px; }
+.lock { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; }
+.redact { display: grid; gap: 6px; padding-block: 4px; }
+.redact i { display: block; height: 9px; background: var(--ink); opacity: 0.82; border-radius: 1px; }
+.locked-line { display: flex; gap: 8px; align-items: flex-start; }
+.locked-line .lock { width: 16px; height: 16px; margin-top: 4px; stroke: var(--graphite); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-family: var(--mono); font-size: 0.6875rem; padding: 3px 8px; border: 1px solid var(--rule); color: var(--graphite); border-radius: 2px; }
+
+/* chart */
+.chart { border: 1px solid var(--rule); background: var(--sheet); padding: 16px 16px 12px; display: grid; gap: 12px; }
+.chart-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.6875rem; color: var(--graphite); }
+.legend i { display: inline-block; width: 12px; height: 8px; margin-right: 6px; vertical-align: 0; }
+.k-a { background: var(--graphite); opacity: 0.55; }
+.k-b { background: var(--trace); }
+.rows { display: grid; gap: 10px; }
+.row { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; align-items: center; }
+.row .name { font-size: 0.85rem; }
+.row.total .name { font-weight: 600; }
+.bars { display: grid; gap: 3px; position: relative;
+  background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px);
+  background-size: 25% 100%; background-repeat: repeat-x; padding-right: 1px; }
+.bar { height: 12px; display: flex; align-items: center; position: relative; }
+.bar b { display: block; height: 100%; }
+.bar.a b { background: var(--graphite); opacity: 0.55; }
+.bar.b b { background: var(--trace); }
+.bar span { font-family: var(--mono); font-size: 0.6875rem; margin-left: 6px; font-variant-numeric: tabular-nums; color: var(--ink); }
+.axis { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; }
+.ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.625rem; color: var(--graphite); }
+.note { font-size: var(--step--1); color: var(--graphite); }
+
+/* also built */
+.mini-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border: 1px solid var(--rule); background: var(--sheet); margin-top: 8px; }
+.mini { padding: 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.mini h4 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.02em; }
+.mini p { font-size: 0.9rem; color: var(--graphite); }
+.also-head { margin-top: 48px; display: flex; gap: 12px; align-items: baseline; }
+
+/* timeline */
+.timeline { display: grid; gap: 0; border-left: 1.5px solid var(--ink); margin-left: 6px; }
+.t-item { position: relative; padding: 0 0 28px 28px; display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; }
+.t-item:last-child { padding-bottom: 0; }
+.t-item::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); }
+.t-item.now::before { background: var(--trace); border-color: var(--trace); box-shadow: 0 0 0 4px var(--trace-soft); }
+@media (max-width: 640px) { .t-item { grid-template-columns: 1fr; gap: 4px; } }
+.t-when { font-family: var(--mono); font-size: 0.8rem; color: var(--graphite); padding-top: 2px; }
+.t-what h3 { font-size: 1.05rem; font-weight: 600; font-family: var(--body); }
+.t-what .org { color: var(--graphite); font-size: 0.92rem; }
+.t-what p { margin-top: 6px; max-width: 42em; }
+
+/* skills + education */
+.two { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 48px; }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+.skill-groups { display: grid; gap: 22px; }
+.skill-groups h3 { margin-bottom: 10px; }
+.edu { display: grid; gap: 18px; }
+.edu-item { border: 1px solid var(--rule); background: var(--sheet); padding: 16px; display: grid; gap: 4px; }
+.edu-item h3 { font-size: 1.05rem; font-weight: 600; }
+.edu-item .when { font-family: var(--mono); font-size: 0.75rem; color: var(--graphite); }
+
+/* contact */
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; }
+@media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+.contact h2 { font-family: var(--display); font-weight: 700; font-size: clamp(2.5rem, 7vw, 4.5rem); text-transform: uppercase; line-height: 0.92; }
+.contact-list { display: grid; gap: 10px; }
+.contact-list .row2 { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.copied { font-family: var(--mono); font-size: 0.75rem; color: var(--trace); min-height: 1em; }
+footer { border-top: 1.5px solid var(--ink); }
+footer .wrap { padding-block: 18px 28px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="mark" href="#top">Joy <span>Barno</span></a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="label">Robotics &amp; embedded systems engineer</div>
+        <h1>Joy<br>Barno</h1>
+        <svg class="trace-svg" viewBox="0 0 440 34" aria-hidden="true" preserveAspectRatio="none">
+          <polyline class="base" fill="none" stroke-width="1.5" points="0,26 60,26 70,26 70,8 110,8 110,26 150,26 150,8 190,8 190,26 230,26 236,14 242,30 248,6 254,26 300,26 300,8 340,8 340,26 440,26"/>
+          <polyline class="pulse" fill="none" stroke-width="2" points="0,26 60,26 70,26 70,8 110,8 110,26 150,26 150,8 190,8 190,26 230,26 236,14 242,30 248,6 254,26 300,26 300,8 340,8 340,26 440,26"/>
+        </svg>
+        <p class="lede">I build robots from the frame up: <strong>3D-printed mechanisms, servo power systems, embedded firmware, and the vision and safety software</strong> that ties them together. I'm finishing an M.S. in Electrical Engineering at Texas Tech and looking for full-time robotics, embedded, and hardware roles starting in 2027.</p>
+        <div class="actions">
+          <a class="btn primary" href="#work">See the work</a>
+          <a class="btn" href="https://www.linkedin.com/in/joyadittya-barno-a859511b0" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" href="https://github.com/X-X-Joy-X-X" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+
+      <figure class="figure">
+        <div class="photo-frame">
+          <img src="assets/rover-build.jpg" alt="Quadruped rover on a lab bench, with exposed servo wiring, ESP32 boards and a 3D-printed black chassis" width="1400" height="1120">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        </div>
+        <div class="dim" aria-hidden="true"><span>290 mm chassis</span></div>
+        <figcaption>Quadruped rover from RoboCloud-Safe, spring 2026. Eight MG996R servos, ESP32-S3 with a PCA9685 PWM driver, 3D-printed frame designed in Fusion 360.</figcaption>
+      </figure>
+    </div>
+
+    <div class="titleblock" role="list" aria-label="Summary">
+      <div role="listitem"><span class="label">Drawn by</span><span class="v">J. Barno</span></div>
+      <div role="listitem"><span class="label">School</span><span class="v">Texas Tech University</span></div>
+      <div role="listitem"><span class="label">Degree</span><span class="v">M.S. EE, May 2027</span></div>
+      <div role="listitem"><span class="label">Prior</span><span class="v">B.S. CompE, Robotics minor</span></div>
+      <div role="listitem"><span class="label">Based in</span><span class="v">Lubbock, TX</span></div>
+      <div role="listitem"><span class="label">Status</span><span class="v"><i class="dot"></i>Open to 2027 roles</span></div>
+    </div>
+  </div>
+
+  <!-- ================= WORK ================= -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Selected work</h2>
+        <p>Each project below is something I built or am building, with the numbers it actually hit.</p>
+      </div>
+
+      <!-- Detail A -->
+      <article class="detail">
+        <div class="callout">
+          <div class="bubble">A</div>
+          <div class="meta"><span class="label">Capstone II</span><span class="when">Jan 2026 - May 2026</span></div>
+        </div>
+        <div class="detail-body">
+          <div>
+            <h3>RoboCloud-Safe</h3>
+            <p class="sub">Cloud-assisted control for low-cost robots, where the robot keeps the final say. Two-person team.</p>
+          </div>
+          <div class="gallery">
+            <figure>
+              <img src="assets/rover-cad.jpg" alt="Fusion 360 render of the quadruped rover chassis with four 2-DOF legs" loading="lazy" width="858" height="782">
+              <figcaption>Fusion 360 model: 4 legs × 2 DOF</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/rover-power.png" alt="Power distribution diagram: 7.4 V battery through a switch and fuse to a distribution rail feeding servo and logic branches" loading="lazy" width="1600" height="860">
+              <figcaption>Power distribution: battery, fuse, rail, servo and logic branches</figcaption>
+            </figure>
+          </div>
+          <div class="cols">
+            <ul class="did">
+              <li>Built two robots: a 5-DOF robotic arm and a quadruped rover, both with 3D-printed structures.</li>
+              <li>Redesigned the rover from a 12-servo hexapod to an 8-servo quadruped to cut current demand, lower the center of gravity, and simplify the gait.</li>
+              <li>Set up the rover's power system with separate servo and logic rails, wiring sized for servo stall current, and decoupling for noise.</li>
+              <li>The robots never act directly on cloud commands. A local safety layer checks each signed, time-limited command against motion bounds and rate limits, and handles emergency stops.</li>
+              <li>Owned integration testing and documentation. Traced dropped frames to network saturation and a backed-up inference queue, then added adaptive frame throttling.</li>
+            </ul>
+            <dl class="spec">
+              <div><dt>Platforms</dt><dd>5-DOF arm, ~250 mm reach; quadruped rover, 8 × MG996R</dd></div>
+              <div><dt>Control path</dt><dd>Laptop → Raspberry Pi (UDP/TCP) → ESP32-S3 (UART) → PCA9685 (I2C, 12-bit PWM)</dd></div>
+              <div><dt>Power</dt><dd>7.4 V 5200 mAh LiPo, buck to 6 V servo rail, 14 / 18 AWG</dd></div>
+              <div><dt>Vision</dt><dd>YOLO detection + depth estimation for live object following</dd></div>
+              <div><dt>Cloud</dt><dd>API gateway routing to separate vision and LLM-planning services</dd></div>
+            </dl>
+          </div>
+          <div class="tags"><span class="tag">ESP32-S3</span><span class="tag">Raspberry Pi</span><span class="tag">C++</span><span class="tag">Python</span><span class="tag">Fusion 360</span><span class="tag">3D printing</span><span class="tag">Power design</span></div>
+        </div>
+      </article>
+
+      <!-- Detail B -->
+      <article class="detail">
+        <div class="callout">
+          <div class="bubble">B</div>
+          <div class="meta"><span class="label">Graduate research</span><span class="when">Sep 2026 - Present</span></div>
+        </div>
+        <div class="detail-body">
+          <div>
+            <div class="status"><i class="dot"></i>Continuing research</div>
+            <h3>Sorghum crop and weed segmentation</h3>
+            <p class="sub">Labeling every pixel of a field photo as crop, grass weed, broadleaf weed, or soil, for precision weed control.</p>
+          </div>
+          <div class="cols">
+            <div style="display:grid;gap:16px;min-width:0">
+              <ul class="did">
+                <li>Built a PyTorch pipeline for 6000 × 4000 pixel sorghum field photos with a PVTv2-B2 encoder and EMCAD decoder.</li>
+                <li>Compared one network that does everything against a two-stage design: first separate plants from soil, then classify the plants. The two-stage design wins on every class.</li>
+                <li>Ran a blind annotation audit and found that 37% of the model's "false plant" area was real plants missing from the labels.</li>
+              </ul>
+              <dl class="spec">
+                <div><dt>Input</dt><dd>6000 × 4000 RGB field images, 4 classes</dd></div>
+                <div><dt>Model</dt><dd>PVTv2-B2 + EMCAD, PyTorch</dd></div>
+                <div><dt>Compute</dt><dd>Google Colab T4; scaling to TACC Lonestar6</dd></div>
+              </dl>
+            </div>
+            <figure class="chart" aria-label="Validation IoU by class, single network versus two-stage">
+              <div class="chart-top">
+                <span class="label">Preliminary · validation IoU, 25 images</span>
+                <div class="legend"><span><i class="k-a"></i>Single network</span><span><i class="k-b"></i>Two-stage</span></div>
+              </div>
+              <div class="rows">
+                <div class="row"><span class="name">Sorghum</span><div class="bars"><div class="bar a"><b style="width:71.77%"></b><span>0.72</span></div><div class="bar b"><b style="width:82.07%"></b><span>0.82</span></div></div></div>
+                <div class="row"><span class="name">Grass weed</span><div class="bars"><div class="bar a"><b style="width:41.26%"></b><span>0.41</span></div><div class="bar b"><b style="width:52.10%"></b><span>0.52</span></div></div></div>
+                <div class="row"><span class="name">Broadleaf weed</span><div class="bars"><div class="bar a"><b style="width:43.34%"></b><span>0.43</span></div><div class="bar b"><b style="width:67.68%"></b><span>0.68</span></div></div></div>
+                <div class="row total"><span class="name">Plant mIoU</span><div class="bars"><div class="bar a"><b style="width:52.12%"></b><span>0.52</span></div><div class="bar b"><b style="width:67.28%"></b><span>0.67</span></div></div></div>
+              </div>
+              <div class="axis"><span></span><div class="ticks"><span>0</span><span>0.25</span><span>0.50</span><span>0.75</span><span>1.0</span></div></div>
+              <p class="note">IoU measures overlap between predicted and true pixels (1.0 is perfect).</p>
+            </figure>
+          </div>
+          <div class="gallery even">
+            <figure>
+              <img src="assets/sorghum-truth.jpg" alt="Field photo detail with hand-labeled plants: sorghum in red, grass weeds in green, broadleaf weeds in blue" loading="lazy" width="900" height="600">
+              <figcaption>Hand-labeled ground truth (detail)</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/sorghum-pred.jpg" alt="Same field photo detail with the two-stage model's predicted labels in the same colors" loading="lazy" width="900" height="600">
+              <figcaption>Two-stage model prediction, same area</figcaption>
+            </figure>
+          </div>
+          <p class="note">Red = sorghum, green = grass weed, blue = broadleaf weed. Held-out test image, never used for training or tuning. These are preliminary results from ongoing work (short pilot training runs); longer training and extra crop datasets are next.</p>
+          <div class="tags"><span class="tag">Continuing research</span><span class="tag">PyTorch</span><span class="tag">Semantic segmentation</span><span class="tag">Precision agriculture</span><span class="tag">HPC</span></div>
+        </div>
+      </article>
+
+      <!-- Detail C -->
+      <article class="detail">
+        <div class="callout">
+          <div class="bubble">C</div>
+          <div class="meta"><span class="label">Applied Vision Lab</span><span class="when">Jun 2025 - Dec 2025</span></div>
+        </div>
+        <div class="detail-body">
+          <div>
+            <h3>Cotton X-ray inspection</h3>
+            <p class="sub">Finding foreign matter in cotton X-ray images so people don't have to inspect them by hand.</p>
+          </div>
+          <div class="cols">
+            <ul class="did">
+              <li>Built an image-processing pipeline that proposes candidate regions with MSER and classifies them with a CNN.</li>
+              <li>Labeled about 1,000 image crops and built tooling for training, inference, and drawing detections back onto the original X-rays.</li>
+              <li>Explored unsupervised options too: clustering SIFT descriptors of candidate regions and autoencoder reconstruction error.</li>
+              <li>Packaged the pipeline as a Windows desktop app so lab members can open an X-ray and run detection in one click.</li>
+            </ul>
+            <dl class="spec">
+              <div><dt>Precision</dt><dd>~93%</dd></div>
+              <div><dt>Recall</dt><dd>~90%</dd></div>
+              <div><dt>Impact</dt><dd>~70% less manual inspection</dd></div>
+            </dl>
+          </div>
+          <div class="gallery three">
+            <figure>
+              <img src="assets/cotton-filtered.jpg" alt="Filtered cotton X-ray showing fibre texture and small bright foreign particles" loading="lazy" width="800" height="800">
+              <figcaption>Filtered X-ray (detail)</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/cotton-detect.jpg" alt="Same cotton X-ray region with red boxes on detected trash and green boxes on rejected candidates" loading="lazy" width="800" height="800">
+              <figcaption>Detections: red = trash, green = rejected</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/cotton-sift-clusters.jpg" alt="Scatter plot of SIFT descriptors projected with PCA, colored by MiniBatch k-means cluster" loading="lazy" width="1000" height="800">
+              <figcaption>SIFT descriptors clustered (PCA view)</figcaption>
+            </figure>
+          </div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">CNN</span><span class="tag">MSER</span><span class="tag">Desktop GUI</span><span class="tag">Dataset building</span></div>
+        </div>
+      </article>
+
+      <div class="also-head"><span class="label">Confidential work</span></div>
+      <div class="locked-grid">
+        <div class="locked">
+          <div class="lock-row"><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg><span class="label">Confidential pilot project</span></div>
+          <h4>Embedded systems &amp; computer vision</h4>
+          <span class="when">TransTech Lab, Texas Tech · Feb 2026 - Present</span>
+          <div class="redact" aria-hidden="true"><i style="width:92%"></i><i style="width:78%"></i><i style="width:55%"></i></div>
+          <p>Details stay private while the pilot runs. I'm happy to walk through my role in an interview.</p>
+        </div>
+        <div class="locked">
+          <div class="lock-row"><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg><span class="label">Confidential pilot project</span></div>
+          <h4>Power systems test &amp; measurement</h4>
+          <span class="when">TransTech Lab, Texas Tech · Sep 2026 - Present</span>
+          <div class="redact" aria-hidden="true"><i style="width:85%"></i><i style="width:94%"></i><i style="width:48%"></i></div>
+          <p>Details stay private while the pilot runs. I'm happy to walk through my role in an interview.</p>
+        </div>
+      </div>
+
+      <div class="also-head"><span class="label">Also built</span></div>
+      <div class="mini-grid">
+        <div class="mini">
+          <span class="when label">Jan 2025 - May 2025</span>
+          <h4>Swarm surveillance</h4>
+          <p>Four legged ESP32-CAM robots running FreeRTOS, with person detection, image upload, heartbeat reporting, and UART motor control.</p>
+        </div>
+        <div class="mini">
+          <span class="when label">May 2024 - Jul 2024</span>
+          <h4>Tank Track</h4>
+          <p>A rover competition course with IR checkpoint beacons, piezoelectric targets for automatic hit scoring, and OpenCV rover tracking.</p>
+        </div>
+        <div class="mini">
+          <span class="when label">Jan 2024 - May 2024</span>
+          <h4>Penalty shootout rover</h4>
+          <p>Audio-triggered FPGA control in Verilog with band-pass filtering and PWM, plus a custom power-distribution PCB I soldered.</p>
+        </div>
+        <div class="mini">
+          <span class="when label">Aug 2024 - Dec 2024</span>
+          <h4>Raider Royale</h4>
+          <p>A text-based fighting game in Unity with an object-oriented C# game manager, chat, and cloud-backed state in AWS DynamoDB.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head"><h2>Experience</h2></div>
+      <div class="timeline">
+        <div class="t-item now">
+          <div class="t-when">Feb 2026 - Present</div>
+          <div class="t-what"><h3>Graduate Research Assistant</h3><div class="org">TransTech Lab, Texas Tech University</div>
+            <p class="locked-line"><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg>Two confidential pilot projects. Details available on request.</p></div>
+        </div>
+        <div class="t-item">
+          <div class="t-when">Jun 2025 - Dec 2025</div>
+          <div class="t-what"><h3>Research Assistant</h3><div class="org">Applied Vision Lab, Texas Tech University</div>
+            <p>Cotton X-ray foreign-matter detection with MSER and a CNN classifier.</p></div>
+        </div>
+        <div class="t-item">
+          <div class="t-when">Jan 2025 - May 2025</div>
+          <div class="t-what"><h3>Volunteer Researcher</h3><div class="org">AI for Healthcare Research Group</div>
+            <p>Reproduced and benchmarked three CNN and transformer models for brain-tumor classification and segmentation.</p></div>
+        </div>
+        <div class="t-item">
+          <div class="t-when">Aug 2023 - Dec 2025</div>
+          <div class="t-what"><h3>Vice President</h3><div class="org">IEEE Student Chapter, Texas Tech University</div>
+            <p>Ran technical workshops and networking events with 100+ attendees and coordinated fundraising of about $1,000.</p></div>
+        </div>
+        <div class="t-item">
+          <div class="t-when">Jan 2023 - May 2026</div>
+          <div class="t-what"><h3>Student Assistant Tutor</h3><div class="org">Department of Electrical &amp; Computer Engineering, Texas Tech</div>
+            <p>Helped 20+ students a semester debug C programs and work through machine learning coursework.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS + EDUCATION ================= -->
+  <section id="skills">
+    <div class="wrap two">
+      <div>
+        <div class="sec-head"><h2>Skills</h2></div>
+        <div class="skill-groups">
+          <div><h3 class="label">Embedded &amp; hardware</h3><div class="tags"><span class="tag">ESP32 / ESP32-S3 / ESP32-CAM</span><span class="tag">Raspberry Pi</span><span class="tag">NVIDIA Jetson</span><span class="tag">FreeRTOS</span><span class="tag">UART · I2C · GPIO · PWM</span><span class="tag">Servo &amp; DC motor drivers</span><span class="tag">Power distribution</span><span class="tag">Soldering</span><span class="tag">Verilog / FPGA</span></div></div>
+          <div><h3 class="label">Software</h3><div class="tags"><span class="tag">C++</span><span class="tag">C</span><span class="tag">Python</span><span class="tag">Java</span><span class="tag">C#</span><span class="tag">SQL</span><span class="tag">Linux</span><span class="tag">Git</span><span class="tag">Multithreading</span><span class="tag">Flask</span><span class="tag">AWS</span></div></div>
+          <div><h3 class="label">Vision &amp; ML</h3><div class="tags"><span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">OpenCV</span><span class="tag">YOLO</span><span class="tag">Semantic segmentation</span><span class="tag">Dataset labeling</span></div></div>
+          <div><h3 class="label">CAD &amp; tools</h3><div class="tags"><span class="tag">Fusion 360</span><span class="tag">3D printing</span><span class="tag">LTspice</span><span class="tag">Vivado</span><span class="tag">Code Composer Studio</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-head"><h2>Education</h2></div>
+        <div class="edu">
+          <div class="edu-item"><span class="when">Expected May 2027</span><h3>M.S. Electrical Engineering</h3><span>Texas Tech University, Lubbock, TX</span></div>
+          <div class="edu-item"><span class="when">Aug 2022 - May 2026</span><h3>B.S. Computer Engineering, Robotics minor</h3><span>Texas Tech University · GPA 3.5 / 4.0</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact">
+    <div class="wrap contact">
+      <h2>Let's build<br>something.</h2>
+      <div class="contact-list">
+        <span class="label">Email</span>
+        <div class="row2">
+          <span class="email" id="email">joybarno9@gmail.com</span>
+          <button class="btn" type="button" id="copy-email">Copy</button>
+          <span class="copied" id="copied" aria-live="polite"></span>
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://www.linkedin.com/in/joyadittya-barno-a859511b0" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" href="https://github.com/X-X-Joy-X-X" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">Joy Barno · Lubbock, TX</span>
+    <span class="label">Rev D · Updated Oct 2026</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById('copy-email');
+    var out = document.getElementById('copied');
+    var email = document.getElementById('email');
+    btn.addEventListener('click', function () {
+      var text = email.textContent.trim();
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(email);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        out.textContent = 'Selected. Press Ctrl+C to copy.';
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () { out.textContent = 'Copied'; }, fallback);
+      } catch (e) { fallback(); }
+    });
+  })();
+</script>
+</body>
+</html>
